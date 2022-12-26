@@ -1,3 +1,12 @@
 #!/usr/bin/bash 
 
- ls -h ~/DataBase 
+if [[ ! "$(ls -A ~/DataBase)"  ]]; then
+    echo "No Databases available!"
+    
+else
+    echo Available Databases :
+    ls
+    
+    
+fi
+
