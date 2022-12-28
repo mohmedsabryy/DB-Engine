@@ -1,14 +1,18 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 connect_DB()
 {
-    cd ~/DB_Engine/$name_DB
+    cd ~/DataBase/$name_DB
     echo -e "Welcome To $name_DB Database \n"
     select table in "Create Table" "List Tables" "Drop Table" "Insert To Table" "Select From Table" "Delete From Table" "Back Main Menu"
     do
     case $table in 
     "Create Table" )
+<<<<<<< HEAD
     createTable.sh 
+=======
+    CreateTable.sh 
+>>>>>>> 3d2392fda8bad27bf9ad08699a1220cfe45feccd
     ;;
     "List Tables" ) 
     showTables.sh
@@ -22,11 +26,19 @@ connect_DB()
     "Select From Table" )
     SelectTable.sh 
     ;;
+<<<<<<< HEAD
     "update Table From Table" )
     updateTable.sh
     ;;
     "Back Main Menu" )
      MainMenu.sh
+=======
+    "Delete From Table" )
+    deleteTable.sh
+    ;;
+    "Back Main Menu" )
+    MainMenu.sh
+>>>>>>> 3d2392fda8bad27bf9ad08699a1220cfe45feccd
     ;;
     * )
             echo "Invalid option $REPLY"
@@ -58,14 +70,14 @@ then
         then
             echo -e "This Database Isn't Exist \n"
             echo -e "Switching You To The Main Menu \n"
-            ~/ITI9Month/linux/Bash/DB-Engine/MainMenu.sh
+            MainMenu.sh
         else
          connect_DB
         fi
     else
         echo -e "Database Server is Empty \n"
         echo -e "Switching you To The Main Menu"
-        . ~/ITI9Month/linux/Bash/DB-Engine/MainMenu.sh
+        MainMenu.sh
     fi
 fi
 

@@ -1,6 +1,3 @@
-#!/usr/bin/bash 
-function MetaData()
-{
 
 validMetaData=true
 #############################  Primary Key    ##############################
@@ -23,7 +20,7 @@ while $validMetaData; do
         elif [[ $pk_name =~ ^([a-zA-Z])+([a-zA-Z0-9])*$ ]]; then
         pwd
             echo -n "$pk_name" >> "$tableName"
-            echo -n "-" >> "$tableName"
+            echo -n "-" >> "~/DataBase/$name_DB/$tableName"
             validMetaData=false
         else
             echo -e "Primary key can't start with numbers or special characters\e[0m"
@@ -52,7 +49,7 @@ done
 ############################# End  Primary Key    ##############################
 
 
-for (( i = 1; i < numOfColumns; i++ )); do
+for (( i = 1; i <= numOfColumns; i++ )); do
         validMetaData=true
         while $validMetaData; do
             echo -e "Enter name of column $[i+1]"
@@ -90,26 +87,4 @@ for (( i = 1; i < numOfColumns; i++ )); do
     done
 done
 #PS1=$'\e[1;35mChoose from Table Screen : \e[1m'
-
-
-}
-echo -e "Enter name of table"
-read tableName
-if [[ "$tableName" = "" ]]; then
-	echo -e "invalid table name, please enter a correct name"
-
-elif [[ -e "$tableName" ]]; then
-	echo -e "$tableName table already exists"
-
-elif  [[ "$tableName" =~ ^([a-zA-Z\_])+([a-zA-Z0-9])*$ ]]; then
-	
-	touch "$tableName"
-	MetaData
-	echo -e "$tableName Table created sucessfully"
-
-	connect_to_DB.sh
-else
-	echo -e "Table name can't start with numbers or special characters"
-
-fi
 
