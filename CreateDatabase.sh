@@ -5,7 +5,7 @@ read -p "Enter Database Name: " name
             if [ -e $name ] ;then
                 echo "Database Already Exits : "
                 
-            elif [[ "$name" =~ ^([a-zA-Z\_])+([a-zA-Z0-9\_])*$ ]]; then 
+            elif [[ "$name" =~ ^([a-zA-Z])+([a-zA-Z0-9\_])*$ ]]; then 
             mkdir ~/DataBase/$name
                 echo "$name Created Successfully"
             else 

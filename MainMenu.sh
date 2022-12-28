@@ -19,7 +19,7 @@ do
         ;;
        
         UseDB )
-        	UseDatabase.sh
+        	connect_to_DB.sh
         ;;
          DropDB )
         	DropDatabase.sh
