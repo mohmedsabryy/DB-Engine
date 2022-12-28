@@ -8,25 +8,25 @@ connect_DB()
     do
     case $table in 
     "Create Table" )
-    . ./createTable.sh 
+    createTable.sh 
     ;;
     "List Tables" ) 
-    . ./showTables.sh
+    showTables.sh
     ;;
     "Drop Table" )
-    . ./DropTable.sh
+    DropTable.sh
     ;;
     "Insert To Table" )
-    . ./InsertTable.sh 
+    InsertTable.sh 
     ;;
     "Select From Table" )
-    . ./SelectTable.sh 
+    SelectTable.sh 
     ;;
-    "Delete From Table" )
-    . ./deleteTable.sh
+    "update Table From Table" )
+    updateTable.sh
     ;;
     "Back Main Menu" )
-    . ./MainMenu.sh
+     MainMenu.sh
     ;;
     * )
             echo "Invalid option $REPLY"
