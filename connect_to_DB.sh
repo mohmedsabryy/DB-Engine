@@ -8,14 +8,12 @@ connect_DB()
     do
     case $table in 
     "Create Table" )
-<<<<<<< HEAD
-    createTable.sh 
-=======
+
     CreateTable.sh 
->>>>>>> 3d2392fda8bad27bf9ad08699a1220cfe45feccd
+
     ;;
     "List Tables" ) 
-    showTables.sh
+    ShowTables.sh
     ;;
     "Drop Table" )
     DropTable.sh
@@ -23,22 +21,16 @@ connect_DB()
     "Insert To Table" )
     InsertTable.sh 
     ;;
-    "Select From Table" )
-    SelectTable.sh 
+    "Use Table" )
+    UseTable.sh 
     ;;
-<<<<<<< HEAD
+
     "update Table From Table" )
     updateTable.sh
     ;;
     "Back Main Menu" )
      MainMenu.sh
-=======
-    "Delete From Table" )
-    deleteTable.sh
-    ;;
-    "Back Main Menu" )
-    MainMenu.sh
->>>>>>> 3d2392fda8bad27bf9ad08699a1220cfe45feccd
+
     ;;
     * )
             echo "Invalid option $REPLY"
