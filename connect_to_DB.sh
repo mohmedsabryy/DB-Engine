@@ -4,7 +4,7 @@ connect_DB()
 {
     cd ~/DataBase/$name_DB
     echo -e "Welcome To $name_DB Database \n"
-    select table in "Create Table" "List Tables" "Drop Table" "Insert To Table" "Use Table" "update Table From Table" "Delete record" "Delete column" "Back Main Menu"
+    select table in "Create Table" "List Tables" "Drop Table" "Insert To Table" "Use Table" "Update Table" "Back Main Menu"
     do
     case $table in 
     "Create Table" )
@@ -18,15 +18,13 @@ connect_DB()
     DropTable.sh
     ;;
     "Insert To Table" )
-    InsertTable.sh 
+    InsertIntoTable.sh 
     ;;
     "Use Table" )
     UseTable.sh 
     ;;
-    
-
-    "update Table From Table" )
-    updateTable.sh
+    "Update Table" )
+    UpdateTable.sh
     ;;
     "Back Main Menu" )
      MainMenu.sh

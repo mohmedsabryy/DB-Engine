@@ -13,7 +13,7 @@ Use_Table(){
         echo -e "The data type for each column ( integer , string )\n"
         echo ${datatype[@]} ;
 
-        option=("display table" "Select record by PK" "Delete column" "Delete record" "Back to cennect menu");
+        option=("display table" "Select record by PK" "Delete column" "Delete record" "Back to main menu");
         while [[ "$option" != "Back to cennect menu" ]]
         do
             select option in "${option[@]}"
