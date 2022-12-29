@@ -107,7 +107,7 @@ elif  [[ "$tableName" =~ ^([a-zA-Z\_])+([a-zA-Z0-9])*$ ]]; then
 	MetaData
 	echo -e "$tableName Table created sucessfully"
 
-	connect_to_DB.sh
+	MainMenu.sh
 else
 	echo -e "Table name can't start with numbers or special characters"
 
