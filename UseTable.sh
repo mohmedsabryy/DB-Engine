@@ -1,19 +1,44 @@
 #!/bin/bash
 
+deleteRow(){
+     echo -e "\e[1;36mEnter $(head -1 "$table_name" | cut -d ':' -f1 | awk -F "-" 'BEGIN { RS = ":" } {print $1}') (primary key) \e[0m"
+    read
+    recordNum=$(cut -d ':' -f1 "$table_name" | awk '{if(NR != 1) print $0}'| grep -x -n -e "$REPLY" | cut -d':' -f1)
+    if [[ "$REPLY" == '' ]]; then
+        echo    "mno entry"
+        echo -e "36mpress Enter to continue"
+        read
+        clear
+    elif [[ "$recordNum" = '' ]]; then
+        echo -e "\e[41mthis primary key doesn't exist\e[0m"
+        echo -e "\e[1;36mpress Enter to continue\e[0m"
+        read
+        clear
+    else
+        let recordNum=$recordNum+1 
+        sed -i "${recordNum}d" "$table_name"
+        echo -e "\e[42mrecord deleted successfully\e[0m"
+        echo -e "\e[1;36mpress Enter to continue\e[0m"
+        read
+        clear
+    fi
+
+}
+
 Use_Table(){
     echo -e "Enter table name \n"
     read table_name ;
     if [ -f $table_name ] ; then
         # Metadata.sh
-        read primary_key <<< $(sed '2!d' $table_name) ;
-        read -a columns <<< $(sed '4!d' $table_name) ;
-        read -a datatype <<< $(sed '6!d' $table_name) ;
-        echo -e "Columns of the table : \n ${columns[@]} \n"
-        echo -e "The Column index which have the primary key constraint : \n $primary_key \n"
-        echo -e "The data type for each column ( integer , string )\n"
+        # read primary_key <<< $(sed '2!d' $table_name) ;
+        # read -a columns <<< $(sed '4!d' $table_name) ;
+        # read -a datatype <<< $(sed '6!d' $table_name) ;
+        # echo -e "Columns of the table : \n ${columns[@]} \n"
+        # echo -e "The Column index which have the primary key constraint : \n $primary_key \n"
+        # echo -e "The data type for each column ( integer , string )\n"
         echo ${datatype[@]} ;
 
-        option=("display table" "Select record by PK" "Delete column" "Delete record" "Back to main menu");
+        option=("display table" "Select record by PK" "Delete column"  "Delete record" "Back to main menu");
         while [[ "$option" != "Back to cennect menu" ]]
         do
             select option in "${option[@]}"
@@ -44,8 +69,9 @@ Use_Table(){
                         "Delete column" )
                                 DeleteCol.sh
                             ;;
-                        "Delete record" )
-                                DeleteRec.sh
+                        "Delete record" )  
+                                deleteRow
+                                # DeleteRow.sh
                             ;;
                         "Back to main menu" )
                         MainMenu.sh 
