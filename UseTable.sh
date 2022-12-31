@@ -1,6 +1,36 @@
 #!/bin/bash
+function DeleteCol(){
+read -p "Enter column name: " colName;
 
 
+colNames=($(awk -F: '{print $1}' $table_name))
+
+colFlag=1   #false
+
+
+for i in "${!colNames[@]}"
+do 
+    if [[ $colName == "${colNames[$i]}" ]]; then
+        colFlag=0   #true
+        colNum=$(($i+1));  #column-Number
+    fi   
+done
+
+
+if [[ $colFlag == 0 ]]; then
+
+
+    # delete column from Data/$tableName
+    cut -d':' --complement -f$colNum Databases/$currDB/Data/$table_name > Databases/$currDB/Data/$table_name.tmp
+    mv Databases/$currDB/Data/$table_name.tmp Databases/$currDB/Data/$table_name
+
+    # delete line containing column from Metadata/$tableName
+    sed -i "$colNum"d Databases/$currDB/Metadata/$table_name.metadata
+else
+    echo "ERROR:In-valid column name.";
+fi
+
+}
 
 Use_Table(){
     echo -e "Enter table name \n"
@@ -22,33 +52,19 @@ Use_Table(){
                do
                    case $option in 
                         "display table" ) 
-                            if  [[ $(sed '1,7d' $table_name | wc -l) -eq 0 ]]
-                            then 
-                                echo -e "There are no records in the table "
-                            else
-                                echo -e "Displaying all the records :\n"
-                                sed '1,7d' $table_name
-                            fi
+                            
                             ;;
                         "Select record by PK" )
                             echo -e "Enter a primary key value you want display"
-                            read primary_PK
-                            typeset -i pk_fiel=$primary_key+1
-                            if [[ $(sed '1,7d' $table_name | cut -d " " -f $pk_fiel | grep -x $primary_PK | sed '1!d') ==  $primary_PK ]]
-                            then
-                                let selected_record=$(cut -d " " -f $pk_fiel $table_name | grep -n -x $primary_PK | cut -d: -f1)
-                                echo -e "\n\nThe Record : \n"
-                                sed -n "${selected_record}p" "$table_name"
-                            else
-                                echo -e "The primary key value doesn't match any \n"
-                            fi
+                           
                             ;;
                         "Delete column" )
-                                DeleteCol.sh
+                                # DeleteCol.sh
+                                DeleteCol
                             ;;
                         "Delete record" )  
                                 DeleteRow.sh
-                                # DeleteRow.sh
+                                
                             ;;
                         "Back to main menu" )
                         MainMenu.sh 
