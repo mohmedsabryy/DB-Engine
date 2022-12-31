@@ -1,29 +1,6 @@
 #!/bin/bash
 
-deleteRow(){
-     echo -e "\e[1;36mEnter $(head -1 "$table_name" | cut -d ':' -f1 | awk -F "-" 'BEGIN { RS = ":" } {print $1}') (primary key) \e[0m"
-    read
-    recordNum=$(cut -d ':' -f1 "$table_name" | awk '{if(NR != 1) print $0}'| grep -x -n -e "$REPLY" | cut -d':' -f1)
-    if [[ "$REPLY" == '' ]]; then
-        echo    "mno entry"
-        echo -e "36mpress Enter to continue"
-        read
-        clear
-    elif [[ "$recordNum" = '' ]]; then
-        echo -e "\e[41mthis primary key doesn't exist\e[0m"
-        echo -e "\e[1;36mpress Enter to continue\e[0m"
-        read
-        clear
-    else
-        let recordNum=$recordNum+1 
-        sed -i "${recordNum}d" "$table_name"
-        echo -e "\e[42mrecord deleted successfully\e[0m"
-        echo -e "\e[1;36mpress Enter to continue\e[0m"
-        read
-        clear
-    fi
 
-}
 
 Use_Table(){
     echo -e "Enter table name \n"
@@ -70,7 +47,7 @@ Use_Table(){
                                 DeleteCol.sh
                             ;;
                         "Delete record" )  
-                                deleteRow
+                                DeleteRow.sh
                                 # DeleteRow.sh
                             ;;
                         "Back to main menu" )
