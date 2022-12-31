@@ -31,6 +31,7 @@ function DisplayTable()
         FS=":";
     } 
     {
+        if(NR>1)
         print $0
     }
     END{}
