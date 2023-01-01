@@ -1,34 +1,41 @@
 #!/bin/bash
-function DeleteCol(){
-read -p "Enter column name: " colName;
 
 
-colNames=($(awk -F: '{print $1}' $table_name))
+function DeleteRow()
+{
+    echo  "Enter $(head -1 "$table_name" | cut -d ':' -f1 | awk -F "-" 'BEGIN { RS = ":" } {print $1}') (primary key) "
+    read
+    recordNum=$(cut -d ':' -f1 "$table_name" | awk '{if(NR != 1) print $0}'| grep -x -n -e "$REPLY" | cut -d':' -f1)
+    if [[ "$REPLY" == '' ]]; then
+        echo "no entry"
+ 
+    elif [[ "$recordNum" = '' ]]; then
+        echo  "this primary key doesn't exist"
+ 
+        
+    else
+        let recordNum=$recordNum+1 
+        sed -i "${recordNum}d" "$table_name"
+        echo  "record deleted successfully"
 
-colFlag=1   #false
+        
+    fi
 
+}
 
-for i in "${!colNames[@]}"
-do 
-    if [[ $colName == "${colNames[$i]}" ]]; then
-        colFlag=0   #true
-        colNum=$(($i+1));  #column-Number
-    fi   
-done
+function DisplayTable()
+{
 
-
-if [[ $colFlag == 0 ]]; then
-
-
-    # delete column from Data/$tableName
-    cut -d':' --complement -f$colNum Databases/$currDB/Data/$table_name > Databases/$currDB/Data/$table_name.tmp
-    mv Databases/$currDB/Data/$table_name.tmp Databases/$currDB/Data/$table_name
-
-    # delete line containing column from Metadata/$tableName
-    sed -i "$colNum"d Databases/$currDB/Metadata/$table_name.metadata
-else
-    echo "ERROR:In-valid column name.";
-fi
+    awk '
+    BEGIN{
+        FS=":";
+    } 
+    {
+        if(NR>1)
+        print $0
+    }
+    END{}
+    ' $table_name
 
 }
 
@@ -36,13 +43,7 @@ Use_Table(){
     echo -e "Enter table name \n"
     read table_name ;
     if [ -f $table_name ] ; then
-        # Metadata.sh
-        # read primary_key <<< $(sed '2!d' $table_name) ;
-        # read -a columns <<< $(sed '4!d' $table_name) ;
-        # read -a datatype <<< $(sed '6!d' $table_name) ;
-        # echo -e "Columns of the table : \n ${columns[@]} \n"
-        # echo -e "The Column index which have the primary key constraint : \n $primary_key \n"
-        # echo -e "The data type for each column ( integer , string )\n"
+        
         echo ${datatype[@]} ;
 
         option=("display table" "Select record by PK" "Delete column"  "Delete record" "Back to main menu");
@@ -52,7 +53,9 @@ Use_Table(){
                do
                    case $option in 
                         "display table" ) 
-                            
+
+                            DisplayTable
+
                             ;;
                         "Select record by PK" )
                             echo -e "Enter a primary key value you want display"
@@ -62,9 +65,10 @@ Use_Table(){
                                 # DeleteCol.sh
                                 DeleteCol
                             ;;
-                        "Delete record" )  
-                                DeleteRow.sh
-                                
+                       "Delete record" )  
+
+
+                                DeleteRow
                             ;;
                         "Back to main menu" )
                         MainMenu.sh 
