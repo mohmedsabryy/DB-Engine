@@ -2,10 +2,12 @@
 
 function DeleteRow()
 {
-    echo  "Enter $(head -1 "$table_name" | cut -d ':' -f1 | awk -F "-" 'BEGIN { RS = ":" } {print $1}') (primary key) "
-    read
-    recordNum=$(cut -d ':' -f1 "$table_name" | awk '{if(NR != 1) print $0}'| grep -x -n -e "$REPLY" | cut -d':' -f1)
-    if [[ "$REPLY" == '' ]]; then
+    echo  "Enter $(head -1 "$table_name" |
+     cut -d ':' -f1 | awk -F "-" 'BEGIN { RS = ":" } {print $1}') (primary key) "
+    read pk
+    recordNum=$(cut -d ':' -f1 "$table_name" |
+     awk '{if(NR != 1) print $0}'| grep -x -n -e "$pk" | cut -d':' -f1)
+    if [[ "$pk" == '' ]]; then
         echo "no entry"
 
         
@@ -23,6 +25,23 @@ function DeleteRow()
 
 }
 
+function DeleteColumn()
+{
+    echo "Enter Column name"
+    read col_name
+ awk '
+    BEGIN{
+        FS=":";
+    } 
+    {
+        if($)
+        $col_name=" ";
+        print $0;
+    }
+    END{}
+
+    ' $table_name
+}
 function DisplayTable()
 {
 
@@ -36,6 +55,30 @@ function DisplayTable()
     }
     END{}
     ' $table_name
+}
+
+function SelectByPK()
+{
+   echo  "Enter $(head -1 "$table_name" |
+     cut -d ':' -f1 | awk -F "-" 'BEGIN { RS = ":" } {print $1}') (primary key) "
+    read pk
+    recordNum=$(cut -d ':' -f1 "$table_name" |
+     awk '{if(NR != 1) print $0}'| grep -x -n -e "$pk" | cut -d':' -f1)
+      if [[ "$pk" == '' ]]; then
+        echo "no entry"
+
+        
+    elif [[ "$recordNum" = '' ]]; then
+        echo  "this primary key doesn't exist"
+ 
+        
+    else
+        let recordNum=$recordNum+1 
+        sed -n "${recordNum}p" "$table_name"
+
+        
+    fi
+
 }
 
 Use_Table(){
@@ -61,20 +104,10 @@ Use_Table(){
                             DisplayTable
                             ;;
                         "Select record by PK" )
-                            echo -e "Enter a primary key value you want display"
-                            read primary_PK
-                            typeset -i pk_fiel=$primary_key+1
-                            if [[ $(sed '1,7d' $table_name | cut -d " " -f $pk_fiel | grep -x $primary_PK | sed '1!d') ==  $primary_PK ]]
-                            then
-                                let selected_record=$(cut -d " " -f $pk_fiel $table_name | grep -n -x $primary_PK | cut -d: -f1)
-                                echo -e "\n\nThe Record : \n"
-                                sed -n "${selected_record}p" "$table_name"
-                            else
-                                echo -e "The primary key value doesn't match any \n"
-                            fi
+                            SelectByPK
                             ;;
                         "Delete column" )
-                                DeleteCol.sh
+                                DeleteColumn
                             ;;
                         "Delete record" )  
                                 DeleteRow
