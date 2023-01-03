@@ -1,8 +1,9 @@
 #!/usr/bin/bash 
-if [[ ! "$(ls -A $PWD)"  ]]; then
+if [[ ! "$(ls -f $PWD)"  ]]; then
     echo "No Tables"
 else
     
     echo Available Tables :
     ls
+    
 fi

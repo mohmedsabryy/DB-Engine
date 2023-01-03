@@ -76,8 +76,6 @@ function SelectByPK()
     else
         let recordNum=$recordNum+1 
         sed -n "${recordNum}p" "$table_name"
-
-        
     fi
 
 }
@@ -89,7 +87,7 @@ Use_Table(){
         
         echo ${datatype[@]} ;
 
-        option=("display table" "Select record by PK" "Delete column"  "Delete record" "Back to main menu");
+        option=("display table" "Select record by PK" "Delete record" "Back to main menu");
         while [[ "$option" != "Back to cennect menu" ]]
         do
             select option in "${option[@]}"
@@ -103,12 +101,8 @@ Use_Table(){
                         "Select record by PK" )
                             SelectByPK
                             ;;
-                        "Delete column" )
-                                DeleteColumn
 
-                            ;;
-                       "Delete record" )  
-
+                        "Delete record" )  
 
                                 DeleteRow
                             ;;

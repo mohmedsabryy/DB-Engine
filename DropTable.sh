@@ -1,22 +1,14 @@
 #!/bin/bash
 
-
-
-
-
-
-echo "Enter table name you want to delet "
-read table_name
-
-
-
+read -p "Enter table name you want to delete" table_name
+ 
     if [ -f $table_name ]; then
         rm $table_name
-        echo -e "deleted successfully \n"
+        echo  "deleted successfully "
         MainMenu.sh
     else
-        echo -e "This table isn't exist \n"
-        MainMenu.sh
+        echo "This table isn't exist "
+        DropTable.sh
     fi
 
 

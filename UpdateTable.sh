@@ -87,17 +87,17 @@ echo  "------------------------------------------"
 						else #otherCol
 							updatingField=true
 							while $updatingField ; do
-								echo -e "Enter new value of column \"$(head -1 $dbtable | cut -d ':' 										-f$fieldnum |\
-								awk -F "-" 'BEGIN { RS = ":" } {print $1}')\" of type $(head -1 									"$dbtable" | cut -d ':' -f$fieldnum |\
-								awk -F "-" 'BEGIN { RS = ":" } {print $2}')\e[0m" 
+								echo "Enter new value of column \"$(head -1 $dbtable | cut -d ':' -f$fieldnum |\
+								awk -F "-" 'BEGIN { RS = ":" } {print $1}')\" of type $(head -1 "$dbtable" | cut -d ':' -f$fieldnum |\
+								awk -F "-" 'BEGIN { RS = ":" } {print $2}')" 
 								read
 								check_type=$(check_dataType "$REPLY" "$dbtable" "$fieldnum")
 								if [[ "$check_type" == 0 ]]; then
 									echo "entry invalid"
 								else
 									awk -v fn="$fieldnum" -v rn="$recordNum" -v nv="$REPLY"\
-									'BEGIN { FS = OFS = ":" } { if(NR == rn)	$fn = nv } 											1' "$dbtable"\
-									> "$dbtable".new && rm "$dbtable" && mv "$dbtable".new 											"$dbtable"
+									'BEGIN { FS = OFS = ":" } { if(NR == rn)	$fn = nv } 1' "$dbtable"\
+									> "$dbtable".new && rm "$dbtable" && mv "$dbtable".new "$dbtable"
 									updatingField=false
 									getFieldName=false
 								fi

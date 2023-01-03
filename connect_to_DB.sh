@@ -3,7 +3,7 @@
 connect_DB()
 {
     cd ~/DataBase/$name_DB
-    echo -e "Welcome To $name_DB Database \n"
+    echo "Welcome To $name_DB Database "
     select table in "Create Table" "List Tables" "Drop Table" "Insert To Table" "Use Table" "Update Table" "Back Main Menu"
     do
     case $table in 
@@ -27,12 +27,13 @@ connect_DB()
     UpdateTable.sh
     ;;
     "Back Main Menu" )
+      pwd
      MainMenu.sh
 
     ;;
     * )
             echo "Invalid option $REPLY"
-            echo -e "Please Choose From The Upper Menu \n"
+            echo "Please Choose From The Upper Menu "
     ;;
         esac
     done
@@ -40,37 +41,17 @@ connect_DB()
 
 
 
-echo "Enter database name: "
-read name_DB;
-
-# check if database exists
-if [ -d ~/DataBase ] 
-then
-    cd ~/DataBase
-    arr=($(ls))
-    list=`ls -d * `
-    if [ ${#arr[@]} -gt 0 ]
+read -p "Enter database name: " name_DB
+ 
+if [ -d $name_DB ] 
     then
-    echo -e "Databases in This Server : \n"
-        for i in $list 
-        do 
-            echo $i 
-        done
-        if [ ! -d $name_DB ]
-        then
-            echo -e "This Database Isn't Exist \n"
-            echo -e "Switching You To The Main Menu \n"
+    connect_DB
+else
+    echo  "This Database Isn't Exist or DB server is empty "
+     echo  "Switching You To The Main Menu "
+            sleep 3
             MainMenu.sh
-        else
-         connect_DB
-        fi
-    else
-        echo -e "Database Server is Empty \n"
-        echo -e "Switching you To The Main Menu"
-        MainMenu.sh
-    fi
 fi
-
 
 
 
