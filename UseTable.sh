@@ -3,10 +3,12 @@
 
 function DeleteRow()
 {
-    echo  "Enter $(head -1 "$table_name" | cut -d ':' -f1 | awk -F "-" 'BEGIN { RS = ":" } {print $1}') (primary key) "
-    read
-    recordNum=$(cut -d ':' -f1 "$table_name" | awk '{if(NR != 1) print $0}'| grep -x -n -e "$REPLY" | cut -d':' -f1)
-    if [[ "$REPLY" == '' ]]; then
+    echo  "Enter $(head -1 "$table_name" |
+     cut -d ':' -f1 | awk -F "-" 'BEGIN { RS = ":" } {print $1}') (primary key) "
+    read pk
+    recordNum=$(cut -d ':' -f1 "$table_name" |
+     awk '{if(NR != 1) print $0}'| grep -x -n -e "$pk" | cut -d':' -f1)
+    if [[ "$pk" == '' ]]; then
         echo "no entry"
  
     elif [[ "$recordNum" = '' ]]; then
@@ -23,6 +25,23 @@ function DeleteRow()
 
 }
 
+function DeleteColumn()
+{
+    echo "Enter Column name"
+    read col_name
+ awk '
+    BEGIN{
+        FS=":";
+    } 
+    {
+        if($)
+        $col_name=" ";
+        print $0;
+    }
+    END{}
+
+    ' $table_name
+}
 function DisplayTable()
 {
 
@@ -36,6 +55,30 @@ function DisplayTable()
     }
     END{}
     ' $table_name
+
+}
+
+function SelectByPK()
+{
+   echo  "Enter $(head -1 "$table_name" |
+     cut -d ':' -f1 | awk -F "-" 'BEGIN { RS = ":" } {print $1}') (primary key) "
+    read pk
+    recordNum=$(cut -d ':' -f1 "$table_name" |
+     awk '{if(NR != 1) print $0}'| grep -x -n -e "$pk" | cut -d':' -f1)
+      if [[ "$pk" == '' ]]; then
+        echo "no entry"
+
+        
+    elif [[ "$recordNum" = '' ]]; then
+        echo  "this primary key doesn't exist"
+ 
+        
+    else
+        let recordNum=$recordNum+1 
+        sed -n "${recordNum}p" "$table_name"
+
+        
+    fi
 
 }
 
@@ -58,12 +101,11 @@ Use_Table(){
 
                             ;;
                         "Select record by PK" )
-                            echo -e "Enter a primary key value you want display"
-                           
+                            SelectByPK
                             ;;
                         "Delete column" )
-                                # DeleteCol.sh
-                                DeleteCol
+                                DeleteColumn
+
                             ;;
                        "Delete record" )  
 

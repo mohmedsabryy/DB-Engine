@@ -5,7 +5,7 @@ if [[ ! "$(ls -A ~/DataBase)"  ]]; then
     
 else
     echo Available Databases :
-    ls
+    ls -d */
      
 fi
 

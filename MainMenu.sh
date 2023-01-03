@@ -1,6 +1,6 @@
 #!/usr/bin/bash 
 
-# <<Comment
+
 # function MenuDB() {
 #     ADVSEL=$(whiptail --title "Menu" --fb --menu "Select options"  15 60 4 \
 #     "1" "CreateDB" \
@@ -29,20 +29,20 @@
 #     ;;
 #     5)
 #     echo "Exit"
-#     echo "good bye"
-#      #break
+#      break
 #     ;;
 #     *) 
 #          echo "default"
+#          MainMenu.sh
 #     esac
 
 # }
 
-# Comment
 
-if [ -d ~/DataBase ] ; then 
+if [ -d ~/DataBase ] ; then
+    # MenuDB 
     cd ~/DataBase
-    #MenuDB
+    
 else 
     mkdir ~/DataBase
     echo "DataBase Folder Created!"
